@@ -1,63 +1,75 @@
 import cv2
 import imutils
 
+import matplotlib.pyplot as plt
+
+from glob import glob
+
+images = glob("../../test/*")
+
+'''
+Detection using contours
+'''
+original_image = cv2.imread(images[-1])
+image = original_image.copy()
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+
+
+
+# Find contours, filter using contour approximation, aspect ratio, and contour area
+# threshold_max_area = 550
+threshold_min_area = 10
+cnts = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+for c in cnts:
+    peri = cv2.arcLength(c, True)
+    approx = cv2.approxPolyDP(c, 0.035 * peri, True)
+    x,y,w,h = cv2.boundingRect(approx)
+    aspect_ratio = w / float(h)
+    area = cv2.contourArea(c)
+    # if len(approx) == 4 and area > threshold_min_area and (aspect_ratio >= 0.9 and aspect_ratio <= 1.1):
+    print("asd", c)
+    cv2.rectangle(image, (x, y), (x + w, y + h), (36,255,12), 2)
+
+plt.imshow(image)
+
+
+'''
+Detection using Edges
+'''
+cunts = Contour(cnts)
+temp = cunts.draw_contour(image)
+
 
 class Contour:
     def __init__(
         self,
-        image,
+        contour_array,
         threshold_min_area=None,
-        threshold_max_area=None
+        threshold_max_area=None,
     ):
-
-        self.image = image.copy()
-        self.threshold_max_area = threshold_max_area  if threshold_max_area else self.image.shape[0]*self.image.shape[1]
-        self.threshold_min_area = threshold_min_area  if threshold_min_area else self.image.shape[0]*self.image.shape[1]*0.10
-
-
-    def findContours(
-        self,
-        mode=cv2.RETR_TREE,
-        method=cv2.CHAIN_APPROX_SIMPLE
-    ):
-        gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
-        thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
-        cnts = cv2.findContours(thresh, mode, method)
-        cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-
         # Contours are sorted by thier area
         self.contours = []
-
-        for cout in cnts:
+        for cout in contour_array:
             perimeter = cv2.arcLength(cout, True)
             approx = cv2.approxPolyDP(cout, 0.035 * perimeter, True)
             x,y,w,h = cv2.boundingRect(approx)
             aspect_ratio = w / float(h)
             area = cv2.contourArea(cout)
-            # if len(approx) == 4:
-            self.contours.append([cout, area])
+            if len(approx) == 4:
+                self.contours.append(cout)
 
-    def draw_contour(self, nos_contour=2):
+    def draw_contour(self, image, nos_contour=2):
         contours = sorted(
-            self.contours, key = lambda tupl: tupl[1],
-            reverse=True
+            self.contours, key = lambda item: cv2.contourArea(item)
         )
-        image = self.image.copy()
-
         for i in range(nos_contour):
-            cont = contours[i][0]
-            peri = cv2.arcLength(cont,  True)
-            approx = cv2.approxPolyDP(cont,  0.035 * peri, True)
+            perimeter = cv2.arcLength(contours[i],  True)
+            approx = cv2.approxPolyDP(contours[i],  0.035 * perimeter, True)
             x,y,w,h = cv2.boundingRect(approx)
-            area = cv2.contourArea(cont)
-            if area > self.threshold_min_area:
-                cv2.rectangle(image, (x, y), (x + w, y + h), (36,255,12), 2)
-                cv2.putText(
-                    image,
-                    str(cv2.contourArea(cont)),
-                    org=(x,y),
-                    fontFace = cv2.FONT_HERSHEY_DUPLEX,
-                    fontScale = 1,
-                    color = (0, 255, 0))
-                print(cv2.contourArea(cont), (x,y,w,h))
+            aspect_ratio = w / float(h)
+            area = cv2.contourArea(contours[i])
+            cv2.rectangle(image, (x, y), (x + w, y + h), (36,255,12), 2)
+
         return image

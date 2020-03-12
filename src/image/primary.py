@@ -4,19 +4,18 @@ from utils import *
 from glob import glob
 
 images = glob("../../test/*")
-
 '''
 Detection using contours
 '''
-original_image = cv2.imread(images[0])
+original_image = cv2.imread(images[1])
 
 cunts = Contour(original_image)
 cunts.findContours()
 temp = cunts.draw_contour()
 plt.imshow(temp)
-# image = original_image.copy()
-# gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-# thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+image = original_image.copy()
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
 
 
 
