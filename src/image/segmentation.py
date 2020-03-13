@@ -166,6 +166,22 @@ def display_instances(image, boxes, masks, class_ids, class_names,
     # if auto_show:
     #     plt.show()
 
+def display_instances(image, boxes, masks, class_ids, class_names,
+                      scores=None, title="",
+                      figsize=(16, 16), ax=None,
+                      show_mask=True, show_bbox=True,
+                      colors=None, captions=None):
+    """Will try to display all the obamas in the image"""
+    persons = []
+    for idx, cid in enumerate(class_ids):
+        if cid == 1:
+            y1, x1, y2, x2 = boxes[idx]
+            person = image[y1: y2, x1: x2]
+            persons.append(person)
+
+    # Comparing the persons with obama:
+
+
 
 def display_differences(image,
                         gt_box, gt_class_id, gt_mask,
