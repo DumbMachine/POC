@@ -1,24 +1,65 @@
-# **Basic Information**
+![img](download.jpeg)Mentors:
+- Ulrik Egede
+- Mark Smith
+- Alex Richards
 
-**Name:** Ratin Kumar
 
-**Major:** Computer Engineering
 
-**University:** National Institute of Technology Kurukshetra
 
-**Github:** dumbmachine
+Ratin Kumar
+Email: [ratin.kumar.2k@gmail.com](mailto:ratin.kumar.2k@gmail.com)  
+Phone: +91-9896225424
 
-**Slack:** DumbMachine
 
-**Email:** [*ratin.kumar.2k@gmail.com*](mailto:ratin.kumar.2k@gmail.com)
+# Index
+1. [Introduction](#introduction)
+2. [Synopsis](#synopsis)
+3. [Project Goals](#project-goals)
+4. [Timeline](#timeline)
+5. [Deliverables](#deliverables)
+6. [References](#references)
 
-**Phone:** (+91) *hidden*
 
-**Postal Address:** 208-H6, Hostel 6 of NIT Kurukshetra, `PINCODE`Haryana, India
+# Introduction
 
-**Timezone:** Indian Standard Time (UTC +5:30)
 
-# **Project `redacted`**
+## Personal Information
+|           |                                                              |
+| --------- | ------------------------------------------------------------ |
+| Full Name | Ratin Kumar                                                  |
+| Institute | 2nd Year B.Tech StudentComputer Science and EngineeringNational Institute of Technology Kurukshetra |
+| Email     | [ratin.kumar.2k@gmail.com](mailto:ratin.kumar.2k@gmail.com)[ratin_11822004@nitkkr.ac.in](mailto:ratin_11822004@nitkkr.ac.in) |
+| Phone     | +91-9896225424                                               |
+| Blog      | [https://medium.com/@ratin.kumar.2k](https://medium.com/@ratin.kumar.2k) |
+| Github    | [https://github.com/DumbMachine](https://github.com/DumbMachine) |
+| Skype     | RatinKumar                                                   |
+| IRC Nick  | DumbMachine (Freenode)                                       |
+| Timezone  | Indian Standard Time (GMT +0530)                             |
+| Address   | 317, Abhimanyu Bhavan Hostel-6, NIT campus,National Institute of Technology Kurukshetra, Kurukshetra, Haryana, India 136119 |
+| Reference Contact | Prathamesh ApteEmail: [aptep.1976@rediffmail.com](mailto:aptep.1976@rediffmail.com)Phone: +91-8107407676 |
+| ----------------- | ------------------------------------------------------------ |
+|                   |                                                              |
+
+
+
+## About Me
+I am Ratin Kumar, a 2nd-year undergraduate Computer Engineering student at National Institute of Technology Kurukshetra. I have good experience of using Python and Javascript for creating applications or just some hacky scripts to get things done. I really enjoy coding all the time, because of which I have numerous small projects on my Github.
+
+
+Riding cycle, stalking stock trends and competitive FPS games are some of my interests outside of the world of programming.
+
+
+### Open Source
+I am part of many organizations on Github and have made multiple minor and a few major contributions. I love the spirit of Open Source, promoting universal access to code, and thus have become the part of this amazing community. Being a part of the Open Source group at my College, I have organized workshops on GIT and using Machine Learning for Image Captioning and continually help colleagues.
+
+
+### Skills
+* Good knowledge of using Python and some knowledge of the internals of Python.
+* Knowledge of Data Science.
+* Good background in Mathematics; Calculus and Linear Algebra.
+* Comfortable with using GIT or any other similar service.
+
+Project `redacted`**
 
 ## Abstract
 
@@ -53,11 +94,70 @@ To accomplish this project's aims, a simple gui and a powerful backend which lea
 
 #### Why `redacted`?
 
+Make the world more productive.
+
 #### Why CCExtractor?
 
+Mentor gave me the opportunity.
 
 
-## Proposed Deliverables (during GSoC)
 
+## Proposed Deliverables for GSOC
 
+1. A simple react-based frontend, allowing for ingestion of the following:
+
+   1. Computer-Vision based datasets for:
+
+      - Image/Video Classification
+      - Image Key points
+      - Object Detection
+      - Instance Segmentation
+      - Action Recognition
+      - Video Segmentation
+
+   2. Natural-Language Processing based datasets for:
+
+      - Classification
+
+      - Named Entity Recognition
+
+      - QnA
+
+      - Machine Translation
+
+      - Sentiment Analysis (sentiment slider)
+
+      - Custom tasks ( like transliteration )
+
+   3. Audio based datasets for:
+
+      - Audio Transcription
+      - Audio Segmentation
+      - Audio Classification
+
+2. A robust backend which will take care of:
+
+   - Send data for annotation to frontend
+   - Saving annotations received from frontend 
+   - Export annotations to format allowing for ingestion from AutoML things, Detectron2 and Tensorflow Object Detection API and Our custom thing.
+   - An active learning model, which will improve with each annotation and also provide suggestions for annotations.
+   - Maintain metrics
+
+3. Tests and Continuous Integration tools.
+
+4. Detailed documentation; for users as well as developers.
+
+5. Fortnightly blogs on developmental advances and milestones.
+
+6. Setting the ground for a Model Zoo things, to allow ingestion of Annotations and train models. Possible integration with Rekognition.
+
+## Brief Tentative Working
+
+Brief show of the workflow
+
+## Detailed Working And Implementation
+
+![image-20200315050503344](image-20200315050503344.png)
+
+## Brief Timeline
 
