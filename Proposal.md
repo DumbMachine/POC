@@ -334,57 +334,6 @@ Currently the following are tasks that support iterative or active learning:
 - Classification, Segmentation and Tagging: By either making use of pre-trained vectors to obtain vectors from irregular length audio clips for use as features for regression models or generating own features by analyzing the audio wave histogram.
 - (POC for this will be uploaded soon)
 
-### Major Dependencies
-
-- **ReactJs**
-- **Sklearn**
-- **Tensorflow**/**Pytorch**
-- **Docker**
-- **Flask**
-- **Travis** **CI**
-
-#  Timeline
-
-| Duration              | Task                                                         |
-| --------------------- | :----------------------------------------------------------- |
-| March 31              | **Deadline for submitting Project Proposal**                 |
-| March 31 - April 27   | **Application Review Period**                                |
-| April 27 - May 18     | **Official Community Bonding Period**                        |
-| May 18 - June 12      | **Official Coding Period Start** <br>**Begin Task 1:**<br>Finish implementation of `react-app` and a simple data loading `python-server`. <br>Test `react-app` on samples using local backend server.<br>Perform UI tests and fix bugs. |
-| June 12 - June 15     | Time period for any unexpected delay.<br>**Finish Task 1**   |
-| June 15 - June 19     | **Phase 1 evaluation**<br>Submit git repository of Code with documentation for Task 1 |
-| June 19 - July 10     | **Begin Task 2 : Implement Active Learning**<br/>Implement functionality for integrating active/iterative learning and dataloaders<br>Ask for feedbacks from the users and implement suggestions. |
-| July 10 - July 13     | Time period for any unexpected delay.<br/>**Finish Task 2**  |
-| July 13 - July 17     | **Phase 2 evaluation**<br/>Submit git repository of Code with documentation for Task 2 |
-| July 17 - August 7    | **Begin Task 3 : Complete Integration**<br/>Complete the integration of `react-app` and `python-server`.<br>Implement basic pipeline to allows users to train on data using standard models.<br>Ask feedback from the users and implement suggestions. |
-| August 7 - August 10  | **Phase 3 evaluation**<br/>Submit git repository of Code with documentation for Task 3 |
-| August 10 - August 17 | **Finish Task 3** **Final Submission<br/>**Submit git repository of final code with complete documentation. |
-
-
-
-
-
-## Additional Information Regarding Timeline
-
-- The timeline gives a rough idea of my planned project work. Best efforts will be made to follow the proposed schedule. I believe that I will be able to achieve all the milestones for this project, as it aligns with my interest and trying to do something innovative. 
-- I’ve no other commitments during summer and hence, will be able to dedicate 48 hours to 60 hours a week. During the last month of the project, my college will begin and I’ll be denoting around 28-30 hours a week. `this might be for testing and polishing`.
-- Each week, time will be divided (according to workload) amongst planning, learning, coding, documenting and testing features. Except for the developer’s guide, all documentation will go hand in hand with the development. This will help to keep a profound grasp over the code implementation and working, minimizing bugs in the later stages.
-- Weekends will be mostly dedicated to testing, bug fixing, and blog writing. Fortnightly blogs will be maintained at https://medium.com/@ratin.kumar.2k and will include highlights of the development process and also methods used to overcome hurdles.
-- I’m very enthusiastic about working on this project as it has been on my mind for a long time. It has potential to help in `thing of AI`. 
-
-## Requirements
-
-- **Remote High-Processing Server**: A machine capable of servicing gpu loads of contemporary machine learning tasks. Getting access to this would be appreciated but is not a necessity for successful execution of this project. 
-
-## Previous Contributions
-
-- [Swag lyrics](https://github.com/SwagLyrics/autosynch/issues/30#issuecomment-592868099)
-- Generating script to help migration of CCExtractor wiki page to `fastpages`. Link to [repo](https://github.com/DumbMachine/migrate-ccextractor), link to wip [hosted site]([https://dumbmachine.github.io/ccextractor-wiki-test/_pages/Gsoc%20start%20here.html](https://dumbmachine.github.io/ccextractor-wiki-test/_pages/Gsoc start here.html)). If, in future, a decision is made to not choose `fastpages` but any other framework, I'll be willing to work on it.
-
-
-
-
-
 ## Proposed Deliverables for GSOC
 
 1. A simple react-based frontend, allowing for ingestion of the following:
@@ -429,7 +378,47 @@ Currently the following are tasks that support iterative or active learning:
 5. Fortnightly blogs on developmental advances and milestones. 
 6. Simple pipeline for training to allow users to train standard models with the data annotated by them. Possible integration with CCExtractor's project Rekognition.
 
+#### Major Dependencies
 
+- **ReactJs**
+- **Sklearn**
+- **Tensorflow**/**Pytorch**
+- **Docker**
+- **Flask**
+- **Travis** **CI**
+
+#  Timeline
+
+| Duration              | Task                                                         |
+| --------------------- | :----------------------------------------------------------- |
+| March 31              | **Deadline for submitting Project Proposal**                 |
+| March 31 - April 27   | **Application Review Period**                                |
+| April 27 - May 18     | **Official Community Bonding Period**                        |
+| May 18 - June 12      | **Official Coding Period Start** <br>**Begin Task 1:**<br>Finish implementation of `react-app` and a simple data loading `python-server`. <br>Test `react-app` on samples using local backend server.<br>Perform UI tests and fix bugs. |
+| June 12 - June 15     | Time period for any unexpected delay.<br>**Finish Task 1**   |
+| June 15 - June 19     | **Phase 1 evaluation**<br>Submit git repository of Code with documentation for Task 1 |
+| June 19 - July 10     | **Begin Task 2 : Implement Active Learning**<br/>Implement functionality for integrating active/iterative learning and dataloaders<br>Ask for feedbacks from the users and implement suggestions. |
+| July 10 - July 13     | Time period for any unexpected delay.<br/>**Finish Task 2**  |
+| July 13 - July 17     | **Phase 2 evaluation**<br/>Submit git repository of Code with documentation for Task 2 |
+| July 17 - August 7    | **Begin Task 3 : Complete Integration**<br/>Complete the integration of `react-app` and `python-server`.<br>Implement basic pipeline to allows users to train on data using standard models.<br>Ask feedback from the users and implement suggestions. |
+| August 7 - August 10  | **Phase 3 evaluation**<br/>Submit git repository of Code with documentation for Task 3 |
+| August 10 - August 17 | **Finish Task 3** **Final Submission<br/>**Submit git repository of final code with complete documentation. |
+
+## Additional Information Regarding Timeline
+
+- The timeline gives a rough idea of my planned project work. Best efforts will be made to follow the proposed schedule. I believe that I will be able to achieve all the milestones for this as it aligns with my interest and trying to do something innovative. 
+- I’ve no other commitments during summer and hence, will be able to dedicate 48 hours to 60 hours a week. During the last month of the project, my college will begin and I’ll be denoting around 28-30 hours a week.
+- Each week, time will be divided for implementation of features and documentation of these features. All the features and documentation will be written simultaneously (in the same week). I would like to spend weekdays on implementation and use weekends for testing, writing documentation and researching about the next weeks implementation.
+- Weekends will be mostly dedicated to testing, bug fixing, and blog writing. Fortnightly blogs will be maintained at https://medium.com/@ratin.kumar.2k and will include highlights of the development process and also methods used to overcome hurdles.
+
+## Requirements
+
+- **Remote High-Processing Server**: A machine capable of servicing gpu loads of contemporary machine learning tasks. Getting access to this would be appreciated but is not a necessity for successful execution of this project. 
+
+## Previous Contributions
+
+- [Swag lyrics](https://github.com/SwagLyrics/autosynch/issues/30#issuecomment-592868099)
+- Generating script to help migration of CCExtractor wiki page to `fastpages`. Link to [repo](https://github.com/DumbMachine/migrate-ccextractor), link to wip [hosted site]([https://dumbmachine.github.io/ccextractor-wiki-test/_pages/Gsoc%20start%20here.html](https://dumbmachine.github.io/ccextractor-wiki-test/_pages/Gsoc start here.html)). If, in future, a decision is made to not choose `fastpages` but any other framework, I'll be willing to work on it.
 
 ## Working Environment And Schedule
 
@@ -441,9 +430,8 @@ I’m very flexible with my schedule and timezone variation (with my mentor) won
 
 ## Future Prospects:
 
-- Building a extension to this project to bring support for training models using standard or sota models.
+- Building a extension to this project to bring support for training models using state of the art models.
 - Build a complete pipeline to allow laymen to train machine learning models and then export in standard forms.
-- I want to, through this project, provide the technical/non-technical audience a means to easily make datasets or train practical models on them.
 - Add support for cloud backend to data source.
 - Add support to allow usage cloud services as the processing backend.
 
