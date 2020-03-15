@@ -66,9 +66,7 @@ To accomplish this project's aims, a simple gui and a powerful backend which lea
 - Increase in speed and efficiency of manual annotators.
 - Increase the amount of annotated data, as annotation tasks' difficulty and time investment decreases.
 
-`redacted` will allow institutes, professional or any interested party to annotate data fast and easily, leaving the party with more time for implementation of solution.Brief Tentative Working
-
-Brief show of the workflow
+`redacted` will allow institutes, professional or any interested party to annotate data fast and easily, leaving the party with more time for implementation of solution.
 
 ## Detailed Working And Implementation
 
@@ -77,16 +75,16 @@ Brief show of the workflow
 The project can be divided into the following components:
 
 - **React based frontend**: The frontend webapp, will be the component most users see and use. 
-- **Python based backend**: The server responsible for providing data to react app and taking annotation data from it. The iterative learning model, which will give real time suggestions of annotations, will also be backend's responsiblity. To increase the modularity of backend's components, the following division is recommended:
-  - **Docker Container**: Machine Learning frameworks have alot of dependencies and can be hard to locally setup. To overcome this, all the functioning related to inference and learning will be done from the container.
-  - **Datastore**: Making use of local filesystem to store the annotations. The annotations will have option to be exported into contemporary formats and then be saved on the local fs.
-  - **Server**: To listen and respond to requests of react app, while also controling the above to components. 
+- **Python based backend**: The server responsible for providing data to react app and taking annotation data from it. The iterative learning model, which will give real time suggestions of annotations, will also be backend's responsibility. To increase the modularity of backend's components, the following division is recommended:
+  - **Docker Container**: Machine Learning frameworks have a lot of dependencies and can be hard to locally setup. To overcome this, all the functioning related to inference and learning will be done from the container.
+  - **Datastore**: Making use of local file-system to store the annotations. The annotations will have option to be exported into contemporary formats and then be saved on the local fs.
+  - **Server**: To listen and respond to requests of react app, while also controlling the above to components. 
 
 Let's look at the components in more detail:
 
 ### React-based Frontend:
 
-(Mockups of the proposed frontend)
+(Mockups of the proposed homepage)
 
 ![image-20200315162227548](image-20200315162227548.png)
 
@@ -138,11 +136,11 @@ user_name: "dumbmachine"
 frontend_theme: "dark" # ∈ ['light', 'dark']
 ```
 
-Using the config all the necassary variables will be initialized and allow for proper communitcation between frontend and backend.
+Using the config all the necessary variables will be initialized and allow for proper communication between frontend and backend.
 
-Once started, the frontend will greet the user with types of annotations available unless stated in the `config_file` . After choosing the necessary task, the `react-app`will request data from `python-backend` which serve the request by fetching data from `data_directory` field in the `config_file`. Upon successful annotation of data, `react-app` will `post` the annotation metadata to `python-backend`and request for further data. This cycle will continue until `train_split` precentage of data points are not annotated.
+Once started, the frontend will greet the user with types of annotations available unless stated in the `config_file` . After choosing the necessary task, the `react-app`will request data from `python-backend` which serve the request by fetching data from `data_directory` field in the `config_file`. Upon successful annotation of data, `react-app` will `post` the annotation metadata to `python-backend`and request for further data. This cycle will continue until `train_split` percentage of data points are not annotated.
 
-(mockup, circular saving )
+(mockup, circular saving)
 
 When `train_split` percent of data points have become annotated, `python-backend` will start learning annotations to provide _suggestions_. After training, the cycle of data annotation will change: when `react-app` asks for `data` for annotation it receives `(data, prediction)` where `data` is the data requested and `prediction` is the suggestion. On each multiple of `train_split`, the model will train with the new data to update its knowledge of annotations and increase accuracy.
 
@@ -253,6 +251,8 @@ I propose the following structure for python-related code:
 - `cli_tools`: This module will implement the `cli` for starting and controlling the service.
 
   ```bash
+  # cli will support the following functions:
+  
   # Registering a new dataset
   $ project-redacted create --dataset <dataset_name> --data_directory <directory>
   # Starting the processes
@@ -263,7 +263,7 @@ I propose the following structure for python-related code:
   $ project-redacted create_config 
   ```
 
-- `active_learning`: This module holds the responsibilites of training a model in the background to produce confident suggestions for annotations on new data. Following methods will be employed for learning:
+- `active_learning`: This module holds the responsibilities of training a model in the background to produce confident suggestions for annotations on new data. Following methods will be employed for learning:
 
   - Algorithmic: These do not employ machine learning based solutions. Making use of general algorithms, that are many times used in conjunction with ml techniques. Further details are provided below, where I mention in details about the techniques for each individual  task of annotations.
   - Machine Learning: These employ machine learning solutions to directly learn trends in data or by using representations of data to learn trends.
@@ -279,9 +279,9 @@ Currently the following are tasks that support iterative or active learning:
      - Only trains model when each category has enough samples, this might not happend uniformly in real world cases.
      - Dataset might have a skewed distribution.
 
-     These issues can be tackled by intensive augmentation to try and balance class distributions or allow user to submit a model for usage in *iterative learning*. This might have the benefit of prior knowledge if user has a model categoring to the dataset. 
+     These issues can be tackled by intensive augmentation to try and balance class distributions or allow user to submit a model for usage in *iterative learning*. This might have the benefit of prior knowledge if user has a model catering to the dataset. 
 
-     A sample for this model can be found in [this notebook](https://www.kaggle.com/ratinkumar/poc-iteration/edit). Where a model is trained in iterations of 100 samples per class for a total of 5 cycles.This implies a model trained on only 3000(6 classes x 500 images each) images out of 25k images,
+     A sample for this model can be found in [this notebook](https://www.kaggle.com/ratinkumar/poc-iteration/edit). Where a model is trained in iterations of 100 samples per class for a total of 5 cycles. This implies that model was trained only on 3000(6 classes x 500 images each) images out of 25k images,
 
      ![img](Sun, 15 Mar 2020 212901.png)
 
@@ -301,7 +301,7 @@ Currently the following are tasks that support iterative or active learning:
 
     ![image](76706748-fd4be000-670f-11ea-9f63-fa809cf3427b.png)
 
-    Second image displays that even if suggested annotation is wrong, the model correctly drew the bounding box.
+    Second image displays that even if suggested annotation is wrong, the model correctly drew the bounding box. Weak Object Detectors will help get boundaries and once Object Detectors get trained with enough data they start suggestion correct boundaries and annotations.
 
     ![image](76706755-089f0b80-6710-11ea-9d0b-970d16c71fa1.png)
 
@@ -319,7 +319,7 @@ Currently the following are tasks that support iterative or active learning:
 
   - NER, Classification, Sentiment Analysis: Two option will available to the user, initially: either make use of tfidf transformers and learn occurrences of works. Or make use of `word2vec` or `bert` to get representations of words and treat it like a normal classification problem.
 
-    By making use of tfidf vectors, a model can learn what category of words are more probable of occuring as a particular category in NERs. An example:
+    By making use of tfidf vectors, a model can learn what category of words are more probable of occurring as a particular category in NERs. An example:
 
     For classification and sentiment analysis using `word2vec` to obtain vector representation of words and sentences to make a regression model proves suffice.
 
@@ -327,7 +327,7 @@ Currently the following are tasks that support iterative or active learning:
 
 - Partial Support:
 
-  - Paraphrase detection and other similar tasks: Weak suggestions can be made in other nlp task by learning trends of occurances of words in data. But these may not offer any real world advantage. This is still under testing
+  - Paraphrase detection and other similar tasks: Weak suggestions can be made in other nlp task by learning trends of occurrences of words in data. But these may not offer any real world advantage. This is still under testing
 
 ###    Audio Tasks:
 
@@ -434,6 +434,7 @@ I’m very flexible with my schedule and timezone variation (with my mentor) won
 - Build a complete pipeline to allow laymen to train machine learning models and then export in standard forms.
 - Add support for cloud backend to data source.
 - Add support to allow usage cloud services as the processing backend.
+- 
 
 ![image-20200315092713162](image-20200315092713162.png)
 
