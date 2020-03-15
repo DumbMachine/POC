@@ -107,9 +107,9 @@ To accomplish this project's aims, a simple gui and a powerful backend which lea
 
    - Send data for annotation to frontend
    - Saving annotations received from frontend 
-   - Export annotations to format allowing for ingestion from AutoML things, Detectron2 and Tensorflow Object Detection API and Our custom thing.
+   - Export annotations to formats allowing for ingestion by Detectron2 and Tensorflow Object Detection API.
    - An active learning model, which will improve with each annotation and also provide suggestions for annotations.
-   - Maintain metrics
+   - Maintain metrics to log the statistics of resources used and latency of requests served.
 
 3. Tests and Continuous Integration tools.
 
