@@ -1,6 +1,6 @@
 ![img](download.jpeg)
 
-
+# Project Redacted
 
 Mentors:
 
@@ -36,23 +36,9 @@ Phone: +91-9896225424
 | Timezone  | Indian Standard Time (GMT +0530)                             |
 | Address   | 317, Abhimanyu Bhavan Hostel-6, NIT campus,National Institute of Technology Kurukshetra, Kurukshetra, Haryana, India 136119 |
 ## About Me
-I am Ratin Kumar, a 2nd-year undergraduate Computer Engineering student at National Institute of Technology Kurukshetra. I have good experience of using Python and Javascript for creating applications or just some hacky scripts to get things done. I really enjoy coding all the time, because of which I have numerous small projects on my Github.
+I am Ratin Kumar, a 2nd-year undergraduate Computer Engineering student at National Institute of Technology Kurukshetra. (I will update this later, currently focusing on more important things)
 
-
-Riding cycle, stalking stock market trends and competitive FPS games are some of my interests outside of the world of programming.
-
-
-### Open Source
-I am part of many organizations on Github and have made multiple minor and a few major contributions. I love the spirit of Open Source, promoting universal access to code, and thus have become the part of this amazing community. Being a part of the Open Source group at my College, I have organized workshops on GIT and using Machine Learning for Image Captioning and continually help colleagues.
-
-
-### Skills
-* Good knowledge of using Python and some knowledge of the internals of Python.
-* Knowledge of Data Science.
-* Good background in Mathematics; Calculus and Linear Algebra.
-* Comfortable with using GIT or any other similar service.
-
-Project `redacted`**
+# Project `redacted`
 
 ## Abstract
 
@@ -79,19 +65,8 @@ To accomplish this project's aims, a simple gui and a powerful backend which lea
 
 - Increase in speed and efficiency of manual annotators.
 - Increase the amount of annotated data, as annotation tasks' difficulty and time investment decreases.
-- Any more points?
 
 `redacted` will allow institutes, professional or any interested party to annotate data fast and easily, leaving the party with more time for implementation of solution.
-
-## Why do I want to Build `redacted`?
-
-#### Why `redacted`?
-
-Make the world more productive.
-
-#### Why CCExtractor?
-
-Mentor gave me the opportunity.
 
 
 
@@ -172,17 +147,13 @@ Let's look at the components in more detail:
 
 (mockup for audio and video under process)
 
-The project will come bundled together. The python server will come with a cli tool to startup all the necesarry. Currently the cli is planned to come with the following features:
+The project will come bundled together. The python server will come with a cli tool to startup all the necesarry. Starting all the necessary components will be as easy as:
 
 ```bash
 # Registering a new dataset
 $ project-redacted create --dataset <dataset_name> --data_directory <directory>
-# Starting the processes
+# Starting the server
 $ project-redacted start --config <config_file>
-# Continue from previous work
-$ project-redacted continue --config <config_file>
-# Create a config file
-$ project-redacted create_config 
 ```
 
 A config file will be essential in providing information necessary for the functioning, a default config will look like:
@@ -209,7 +180,9 @@ classification_categories:
 # Iterative Learning related options
 train: "true"
 training_approach: "iterative_learning" # ∈ ["iterative_learning", "multi_onevsall_classifiers"]
-train_split: "0.1"  # At what proportions to retrain
+train_size: "1000" # max samples from each class for training model
+train_split: "0.1"  # At what proportions of train_size to retrain
+augmentation: "True" # prevent overftting and increase robustness of model
 train_framework: "sklearn" # ∈ ['sklearn', 'tensorflow/pytorch']
 train_acc_threshold: 0.4 # Only serve suggestions if model is able to achive this accuracy 
 
@@ -224,33 +197,223 @@ Once started, the frontend will greet the user with types of annotations availab
 
 (mockup, circular saving )
 
-When `train_split` percent of data points have become annotated, `python-backend` will start learning annotations to provide _suggestions_. After training, the cycle of data annotation will change: when `react-app` asks for `data` for annotation it recieves `(data, prediction)` where `data` is the data requested and `prediction` is the suggestion. On each multiple of `train_split`, the model will train with the new data to update its knowledge of annotations and increase accuracy.
+When `train_split` percent of data points have become annotated, `python-backend` will start learning annotations to provide _suggestions_. After training, the cycle of data annotation will change: when `react-app` asks for `data` for annotation it receives `(data, prediction)` where `data` is the data requested and `prediction` is the suggestion. On each multiple of `train_split`, the model will train with the new data to update its knowledge of annotations and increase accuracy.
+
+The primary component will execute `fn` `getIniData()` when the component mounts 
+
+```javascript
+# home_component: Details left out to maintain brevity.
+import React from 'react';
+import ReactDOM from 'react-dom';
+import axios from 'axios';
+
+class home_demo extends React.Component {
+    # initially all state vars dummy
+    state = {
+        dataset_name: "default_dataset" # name of the current working dataset
+        iter: 0, # index of data to be asked for 
+        data: [], # data to be received from python-server for annotation
+        annotations: "", # annotation of the above mentioned data
+        suggestion: "" # suggestion for the data
+    }
+
+	componentDidMount(){
+        axios.get(`<localhost>/dataset/${this.state.dataset_name}?id=${this.state.iter}`)
+        	.then(res => {
+            const data = res.data.data;
+            const suggestion = res.data.suggestion;
+            this.setState({data, suggestion});
+        });
+    }
+
+	sendAnnotations(){
+        axios.post(
+        `<localhost>/dataset/${this.state.dataset_name}`,
+        {iter, annotations})
+            .then(res => console.log(res))
+        	.catch(err => console.log(err))
+    }
+	......
+    ......
+}
+```
+
+
 
 ## Python-based Backend:
 
-A `flask app` on the backend will be responsible for:
+I propose the following structure for python-related code:
 
-- serving requests of data of `react-app`.
-- saving `annotations` in the required `export_format`.
-- giving data to `docker container` for actively learning from annotations.
+```bash
+# NOTE: Some details are left out to maintain brevity.
+. <source_dir>
+  |-react_app
+  | |-public
+  | |-src
+  | | |-components
+  | | | | App.js
+  | | | | App.css
+  |-python-server
+  | |-server
+  | | |-server.py
+  | | |-server_utils.py
+  | |-cli
+  | | |-cli.py
+  | | |-cli_utils.py      
+  | |-active_learning
+  | | |-server.py
+  | | |-server_utils.py      
+```
 
+`Python` on the backend will be responsible for:
 
+- `server`:  The module will be responsible for catering to the requests of `react-app` and calling the `active_learning` module for learning patterns from annotated data. Main responsibilities are:
 
-# Timeline
+  - serving requests of data of `react-app`.
+  - saving `annotations` in the required `export_format`.
+  - giving data to `docker container` for actively learning from annotations.
+
+  
+
+  ```python
+  # flask_server: Details left out to maintain brevity.
+  from ml_algorithms import suggestion
+  
+  # Register a new dataset        
+  @app.route('/create', methods=['GET'])
+  def register_dataset_handler():
+      ....
+  # Endpoint for `getting` data or `putting` annotations 
+  @app.route('/dataset/<dataset_name>', methods=['GET', 'POST'])
+  def annotation_handler():
+      # react-app is asking for data
+      if request.method == "GET": 
+          return (dataset_generator(dataset_name, idx), suggestion(dataset_name, idx))
+      # react-app is giving the annotation
+     	else:
+          idx = request.form.get('iter')
+          annotation = request.form.get('annotation')
+          save_annotation(
+              dataset_name.
+              annotation, idx
+          )
+          
+  def train_model(...):
+  ```
+
+  
+
+- `cli_tools`: This module will implement the `cli` for starting and controlling the service.
+
+  ```bash
+  # Registering a new dataset
+  $ project-redacted create --dataset <dataset_name> --data_directory <directory>
+  # Starting the processes
+  $ project-redacted start --config <config_file>
+  # Continue from previous work
+  $ project-redacted continue --config <config_file>
+  # Create a config file
+  $ project-redacted create_config 
+  ```
+
+- `active_learning`: This module holds the responsibilites of training a model in the background to produce confident suggestions for annotations on new data. Following methods will be employed for learning:
+
+  - Algorithmic: These do not employ machine learning based solutions. Making use of general algorithms, that are many times used in conjunction with ml techniques. Further details are provided below, where I mention in details about the techniques for each individual  task of annotations.
+  - Machine Learning: These employ machine learning solutions to directly learn trends in data or by using representations of data to learn trends.
+
+Currently the following are tasks that support iterative or active learning:
+
+###    Computer Vision Tasks:
+
+- **Image Classification**:  Two methods will supported for actively learning annotations:
+
+  1. *Simple classifier (or simple classifier on top of pre-trained model):* Here a model will be trained in background on each iteration where number of samples for each class reaches a multiple of `train_split`threshold. Even distribution inhibits the suggestion model from overfitting or biasing. Advantages of this approach are better suggestion and lighter on resource usage. But disdvantages of this approach is :
+
+     - Only trains model when each category has enough samples, this might not happend uniformly in real world cases.
+     - Dataset might have a skewed distribution.
+
+     These issues can be tackled by intensive augmentation to try and balance class distributions or allow user to submit a model for usage in *iterative learning*. This might have the benefit of prior knowledge if user has a model categoring to the dataset. 
+
+     A sample for this model can be found in [this notebook](https://www.kaggle.com/ratinkumar/poc-iteration/edit). Where a model is trained in iterations of 100 samples per class for a total of 5 cycles.This implies a model trained on only 3000(6 classes x 500 images each) images out of 25k images,
+
+     ![img](Sun, 15 Mar 2020 212901.png)
+
+     (There is a spelling mistake on this graph)
+
+  2. *OneVsAllClassifier*:  `n` models will be trained, where `n` corresponds to the number of classes in the classification problem. This will require more resources for inference and training but has the advantage of allowing support for skewed classes.
+
+     (I will link the poc here)
+
+- Object Detection: 
+
+  - Making use of pre-trained models to train on subset of data for which annotations become available. The benefit of using a pre-trained model can be seen with the below examples:
+
+    Note: The below images are result of training tensorflow object detection api using mobilenet on only a set of 20 images, for reference look at [this notebooks](https://colab.research.google.com/drive/15xa-RS3jerXLB3Yw223woppIYN9epO-4#scrollTo=SFQYOYMFmm1n)
+
+    First image displays that models help reduce the total number of annotations to be manually done.
+
+    ![image](76706748-fd4be000-670f-11ea-9f63-fa809cf3427b.png)
+
+    Second image displays that even if suggested annotation is wrong, the model correctly drew the bounding box.
+
+    ![image](76706755-089f0b80-6710-11ea-9d0b-970d16c71fa1.png)
+
+  - Instance Segmentation and Key Points: These will also take an approach similar to above, i.e they will make use of iterative: training on pre-trained models. 
+
+    - The user will also have a choice to use a custom tool which can isolate object using their colors. This tools converts the image colors to `HSV` and tries to isolate specific colors by setting `low,high` ranges.
+
+      ![image-20200316000953611](image-20200316000953611.png)
+
+    For reference : https://colab.research.google.com/drive/1wDoeNGxZOI0Q0YlhFVTe0pI8hi7TuWc9
+
+###    Natural Language Processing:
+
+- Full Support:
+
+  - NER, Classification, Sentiment Analysis: Two option will available to the user, initially: either make use of tfidf transformers and learn occurrences of works. Or make use of `word2vec` or `bert` to get representations of words and treat it like a normal classification problem.
+
+    By making use of tfidf vectors, a model can learn what category of words are more probable of occuring as a particular category in NERs. An example:
+
+    For classification and sentiment analysis using `word2vec` to obtain vector representation of words and sentences to make a regression model proves suffice.
+
+    (I will update the POC for this soon)
+
+- Partial Support:
+
+  - Paraphrase detection and other similar tasks: Weak suggestions can be made in other nlp task by learning trends of occurances of words in data. But these may not offer any real world advantage. This is still under testing
+
+###    Audio Tasks:
+
+- Classification, Segmentation and Tagging: By either making use of pre-trained vectors to obtain vectors from irregular length audio clips for use as features for regression models or generating own features by analyzing the audio wave histogram.
+- (POC for this will be uploaded soon)
+
+### Major Dependencies
+
+- **ReactJs**
+- **Sklearn**
+- **Tensorflow**/**Pytorch**
+- **Docker**
+- **Flask**
+- **Travis** **CI**
+
+#  Timeline
 
 | Duration              | Task                                                         |
-| --------------------- | ------------------------------------------------------------ |
+| --------------------- | :----------------------------------------------------------- |
 | March 31              | **Deadline for submitting Project Proposal**                 |
-| March 31 - April 27   | Application Review Period                                    |
+| March 31 - April 27   | **Application Review Period**                                |
 | April 27 - May 18     | **Official Community Bonding Period**                        |
-| May 18 - August       | **Official Coding Period Start**Finish implementation of pluginTest the plugin to some sample jobs on local backend server.Perform UI tests and fix bugs. |
-| June 6 - June 11      | Time period for any unexpected delay.**Finish Task 1**       |
-| June 11 - June 15     | **Phase 1 evaluation**Submit git repository of Code with documentation for Task 1 |
-| June 15 - July 4      | **Begin Task 2 : Integrate plugin with HTCondor**Implement functionality for integrating HTCondor as backend.Test plugin for real batch jobs at CERN.Ask for feedbacks from the users and implement suggestions. |
-| July 4 - July 9       | Time period for any unexpected delay.**Finish Task 2**       |
-| July 9 - July 13      | **Phase 2 evaluation**Submit git repository of Code with documentation for Task 2 |
-| July 13 - August 10   | **Begin Task 3 : Deploy plugin to CERN IT Infrastructure**Test plugin on CERN’s batch infrastructure.Integrate plugin to SWAN Notebook service.Ask feedback from the users and implement suggestions. |
-| August 10 - August 10 | **Finish Task 3** **Final Submission**Submit git repository of final code with complete documentation. |
+| May 18 - June 12      | **Official Coding Period Start** <br>**Begin Task 1:**<br>Finish implementation of `react-app` and a simple data loading `python-server`. <br>Test `react-app` on samples using local backend server.<br>Perform UI tests and fix bugs. |
+| June 12 - June 15     | Time period for any unexpected delay.<br>**Finish Task 1**   |
+| June 15 - June 19     | **Phase 1 evaluation**<br>Submit git repository of Code with documentation for Task 1 |
+| June 19 - July 10     | **Begin Task 2 : Implement Active Learning**<br/>Implement functionality for integrating active/iterative learning and dataloaders<br>Ask for feedbacks from the users and implement suggestions. |
+| July 10 - July 13     | Time period for any unexpected delay.<br/>**Finish Task 2**  |
+| July 13 - July 17     | **Phase 2 evaluation**<br/>Submit git repository of Code with documentation for Task 2 |
+| July 17 - August 7    | **Begin Task 3 : Complete Integration**<br/>Complete the integration of `react-app` and `python-server`.<br>Implement basic pipeline to allows users to train on data using standard models.<br>Ask feedback from the users and implement suggestions. |
+| August 7 - August 10  | **Phase 3 evaluation**<br/>Submit git repository of Code with documentation for Task 3 |
+| August 10 - August 17 | **Finish Task 3** **Final Submission<br/>**Submit git repository of final code with complete documentation. |
+
+
 
 
 
@@ -266,19 +429,19 @@ A `flask app` on the backend will be responsible for:
 
 - **Remote High-Processing Server**: A machine capable of servicing gpu loads of contemporary machine learning tasks. Getting access to this would be appreciated but is not a necessity for successful execution of this project. 
 
-## Contributions (till 26 March 2018)
+## Previous Contributions
 
-- Swag lyrics
-- Moving the site from thing to `fastpages` or anything else, that they would prefer.
+- [Swag lyrics](https://github.com/SwagLyrics/autosynch/issues/30#issuecomment-592868099)
+- Generating script to help migration of CCExtractor wiki page to `fastpages`. Link to [repo](https://github.com/DumbMachine/migrate-ccextractor), link to wip [hosted site]([https://dumbmachine.github.io/ccextractor-wiki-test/_pages/Gsoc%20start%20here.html](https://dumbmachine.github.io/ccextractor-wiki-test/_pages/Gsoc start here.html)). If, in future, a decision is made to not choose `fastpages` but any other framework, I'll be willing to work on it.
 
 ### Deliverables
 
 - A functional frontend.
 - Fully modular and feature-rich backend which learns annotations while users perform actions.
-- Simple pipeline for training `Classification` and `Object Detection`. Making the base for an extension to allow for training.
 - Full test-suite of `unittests` and `integration`.
 - Detailed documentation of the whole tool.
 - Samples for using the tool.
+- Simple pipeline for training `Classification` and `Object Detection`, to allow users to train standard models with the data annotated by them.
 
 ## Working Environment And Schedule
 
@@ -286,7 +449,7 @@ I’ll be working full-time on the code on weekdays. On weekends, I’ll be focu
 
 I'll be working from either my house or hostel, both the places have access to good internet. 
 
-I’m very flexible with my schedule and already have the habit of working at night and hence timezone variation (with my mentor) won’t be an issue. I’m comfortable with any form of communication that suits my mentor.
+I’m very flexible with my schedule and timezone variation (with my mentor) won’t be an issue. I’m comfortable with any form of communication that suits my mentor.
 
 ## Future Prospects:
 
@@ -297,6 +460,8 @@ I’m very flexible with my schedule and already have the habit of working at ni
 - Add support to allow usage cloud services as the processing backend.
 
 ![image-20200315092713162](image-20200315092713162.png)
+
+(this chart needs updation to slow preprocessors and dataloaders)
 
 # **References**:
 
