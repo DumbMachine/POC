@@ -152,6 +152,90 @@ Brief show of the workflow
 
 ![image-20200315061224704](image-20200315061224704.png)
 
+The project can be divided into the following components:
+
+- **React based frontend**: The frontend webapp, will be the component most users see and use. 
+- **Python based backend**: The server responsible for providing data to react app and taking annotation data from it. The iterative learning model, which will give real time suggestions of annotations, will also be backend's responsiblity. To increase the modularity of backend's components, the following division is recommended:
+  - **Docker Container**: Machine Learning frameworks have alot of dependencies and can be hard to locally setup. To overcome this, all the functioning related to inference and learning will be done from the container.
+  - **Datastore**: Making use of local filesystem to store the annotations. The annotations will have option to be exported into contemporary formats and then be saved on the local fs.
+  - **Server**: To listen and respond to requests of react app, while also controling the above to components. 
+
+Let's look at the components in more detail:
+
+### React-based Frontend:
+
+(Mockups of the proposed frontend)
+
+![image-20200315162227548](image-20200315162227548.png)
+
+![image-20200315162508401](image-20200315162508401.png)
+
+(mockup for audio and video under process)
+
+The project will come bundled together. The python server will come with a cli tool to startup all the necesarry. Currently the cli is planned to come with the following features:
+
+```bash
+# Registering a new dataset
+$ project-redacted create --dataset <dataset_name> --data_directory <directory>
+# Starting the processes
+$ project-redacted start --config <config_file>
+# Continue from previous work
+$ project-redacted continue --config <config_file>
+# Create a config file
+$ project-redacted create_config 
+```
+
+A config file will be essential in providing information necessary for the functioning, a default config will look like:
+
+```yaml
+# config.yaml
+init: False # flag to initialize new dataset repo
+dataset_name: "default_dataset"
+
+# data related options
+data_directory: <current_directory>
+annotation_directory: <current_directory>/annotations
+export_format: "detectron2" # support for standard format from the industry
+
+# Problem related options
+problem_field: "computer-vision"
+problem_sub_field: "classification"
+classification_categories:
+	- aeroplane
+	- airport personnel
+	- shuttle bus
+	- luggage carrier
+
+# Iterative Learning related options
+train: "true"
+training_approach: "iterative_learning" # ∈ ["iterative_learning", "multi_onevsall_classifiers"]
+train_split: "0.1"  # At what proportions to retrain
+train_framework: "sklearn" # ∈ ['sklearn', 'tensorflow/pytorch']
+train_acc_threshold: 0.4 # Only serve suggestions if model is able to achive this accuracy 
+
+# Miscellaneous options
+user_name: "dumbmachine"
+frontend_theme: "dark" # ∈ ['light', 'dark']
+```
+
+Using the config all the necassary variables will be initialized and allow for proper communitcation between frontend and backend.
+
+Once started, the frontend will greet the user with types of annotations available unless stated in the `config_file` . After choosing the necessary task, the `react-app`will request data from `python-backend` which serve the request by fetching data from `data_directory` field in the `config_file`. Upon successful annotation of data, `react-app` will `post` the annotation metadata to `python-backend`and request for further data. This cycle will continue until `train_split` precentage of data points are not annotated.
+
+(mockup, circular saving )
+
+When `train_split` percent of data points have become annotated, `python-backend` will start learning annotations to provide _suggestions_. After training, the cycle of data annotation will change: when `react-app` asks for `data` for annotation it recieves `(data, prediction)` where `data` is the data requested and `prediction` is the suggestion. On each multiple of `train_split`, the model will train with the new data to update its knowledge of annotations and increase accuracy.
+
+## Python-based Backend:
+
+A `flask app` on the backend will be responsible for:
+
+- serving requests of data of `react-app`.
+- saving `annotations` in the required `export_format`.
+- giving data to `docker container` for actively learning from annotations.
+
+
+
 # Timeline
 
 | Duration              | Task                                                         |
@@ -181,8 +265,6 @@ Brief show of the workflow
 ## Requirements
 
 - **Remote High-Processing Server**: A machine capable of servicing gpu loads of contemporary machine learning tasks. Getting access to this would be appreciated but is not a necessity for successful execution of this project. 
-
-
 
 ## Contributions (till 26 March 2018)
 
