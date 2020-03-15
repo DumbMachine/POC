@@ -419,15 +419,15 @@ Currently the following are tasks that support iterative or active learning:
       - Audio Classification
 2. A robust backend which will take care of:
 
-   - Send data for annotation to frontend
-   - Saving annotations received from frontend 
-   - Export annotations to formats allowing for ingestion by Detectron2 and Tensorflow Object Detection API.
+   - Sending data for annotation to frontend.
+   - Saving annotations received from frontend.
+   - Export annotations to formats allowing for direct ingestion.
    - An active learning model, which will improve with each annotation and also provide suggestions for annotations.
    - Maintain metrics to log the statistics of resources used and latency of requests served.
 3. Full test-suite of `unittests` and `integration`.
 4. Detailed documentation; for users as well as developers.
 5. Fortnightly blogs on developmental advances and milestones. 
-6. Simple pipeline for training `Classification` and `Object Detection`, to allow users to train standard models with the data annotated by them. Possible integration with CCExtractor's project Rekognition.
+6. Simple pipeline for training to allow users to train standard models with the data annotated by them. Possible integration with CCExtractor's project Rekognition.
 
 
 
