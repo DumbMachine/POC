@@ -66,60 +66,7 @@ To accomplish this project's aims, a simple gui and a powerful backend which lea
 - Increase in speed and efficiency of manual annotators.
 - Increase the amount of annotated data, as annotation tasks' difficulty and time investment decreases.
 
-`redacted` will allow institutes, professional or any interested party to annotate data fast and easily, leaving the party with more time for implementation of solution.
-
-
-
-## Proposed Deliverables for GSOC
-
-1. A simple react-based frontend, allowing for ingestion of the following:
-
-   1. Computer-Vision based datasets for:
-
-      - Image/Video Classification
-      - Image Key points
-      - Object Detection
-      - Instance Segmentation
-      - Action Recognition
-      - Video Segmentation
-
-   2. Natural-Language Processing based datasets for:
-
-      - Classification
-
-      - Named Entity Recognition
-
-      - QnA
-
-      - Machine Translation
-
-      - Sentiment Analysis (sentiment slider)
-
-      - Custom tasks ( like transliteration )
-
-   3. Audio based datasets for:
-
-      - Audio Transcription
-      - Audio Segmentation
-      - Audio Classification
-
-2. A robust backend which will take care of:
-
-   - Send data for annotation to frontend
-   - Saving annotations received from frontend 
-   - Export annotations to formats allowing for ingestion by Detectron2 and Tensorflow Object Detection API.
-   - An active learning model, which will improve with each annotation and also provide suggestions for annotations.
-   - Maintain metrics to log the statistics of resources used and latency of requests served.
-
-3. Tests and Continuous Integration tools.
-
-4. Detailed documentation; for users as well as developers.
-
-5. Fortnightly blogs on developmental advances and milestones.
-
-6. Setting the ground for a Model Zoo things, to allow ingestion of Annotations and train models. Possible integration with Rekognition.
-
-## Brief Tentative Working
+`redacted` will allow institutes, professional or any interested party to annotate data fast and easily, leaving the party with more time for implementation of solution.Brief Tentative Working
 
 Brief show of the workflow
 
@@ -434,14 +381,55 @@ Currently the following are tasks that support iterative or active learning:
 - [Swag lyrics](https://github.com/SwagLyrics/autosynch/issues/30#issuecomment-592868099)
 - Generating script to help migration of CCExtractor wiki page to `fastpages`. Link to [repo](https://github.com/DumbMachine/migrate-ccextractor), link to wip [hosted site]([https://dumbmachine.github.io/ccextractor-wiki-test/_pages/Gsoc%20start%20here.html](https://dumbmachine.github.io/ccextractor-wiki-test/_pages/Gsoc start here.html)). If, in future, a decision is made to not choose `fastpages` but any other framework, I'll be willing to work on it.
 
-### Deliverables
 
-- A functional frontend.
-- Fully modular and feature-rich backend which learns annotations while users perform actions.
-- Full test-suite of `unittests` and `integration`.
-- Detailed documentation of the whole tool.
-- Samples for using the tool.
-- Simple pipeline for training `Classification` and `Object Detection`, to allow users to train standard models with the data annotated by them.
+
+
+
+## Proposed Deliverables for GSOC
+
+1. A simple react-based frontend, allowing for ingestion of the following:
+
+   1. Computer-Vision based datasets for:
+
+      - Image/Video Classification
+      - Image Key points
+      - Object Detection
+      - Instance Segmentation
+      - Action Recognition
+      - Video Segmentation
+
+   2. Natural-Language Processing based datasets for:
+
+      - Classification
+
+      - Named Entity Recognition
+
+      - QnA datasets
+
+      - Machine Translation
+
+      - Sentiment Analysis 
+
+      - Custom tasks ( like transliteration )
+
+   3. Audio based datasets for:
+
+      - Audio Transcription
+      - Audio Segmentation
+      - Audio Classification
+2. A robust backend which will take care of:
+
+   - Send data for annotation to frontend
+   - Saving annotations received from frontend 
+   - Export annotations to formats allowing for ingestion by Detectron2 and Tensorflow Object Detection API.
+   - An active learning model, which will improve with each annotation and also provide suggestions for annotations.
+   - Maintain metrics to log the statistics of resources used and latency of requests served.
+3. Full test-suite of `unittests` and `integration`.
+4. Detailed documentation; for users as well as developers.
+5. Fortnightly blogs on developmental advances and milestones. 
+6. Simple pipeline for training `Classification` and `Object Detection`, to allow users to train standard models with the data annotated by them. Possible integration with CCExtractor's project Rekognition.
+
+
 
 ## Working Environment And Schedule
 
