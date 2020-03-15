@@ -26,7 +26,7 @@ Phone: +91-9896225424
 |           |                                                              |
 | --------- | ------------------------------------------------------------ |
 | Full Name | Ratin Kumar                                                  |
-| Institute | 2nd Year B.Tech StudentComputer Science and EngineeringNational Institute of Technology Kurukshetra |
+| Institute | 2nd Year B.Tech Student<br>Computer Science and Engineering<br>National Institute of Technology Kurukshetra |
 | Email     | [ratin.kumar.2k@gmail.com](mailto:ratin.kumar.2k@gmail.com)[ratin_11822004@nitkkr.ac.in](mailto:ratin_11822004@nitkkr.ac.in) |
 | Phone     | +91-9896225424                                               |
 | Blog      | [https://medium.com/@ratin.kumar.2k](https://medium.com/@ratin.kumar.2k) |
@@ -34,7 +34,7 @@ Phone: +91-9896225424
 | Skype     | RatinKumar                                                   |
 | IRC Nick  | DumbMachine (Freenode)                                       |
 | Timezone  | Indian Standard Time (GMT +0530)                             |
-| Address   | 317, Abhimanyu Bhavan Hostel-6, NIT campus,National Institute of Technology Kurukshetra, Kurukshetra, Haryana, India 136119 |
+| Address   | 208, Hostel-6, NIT campus<br>National Institute of Technology Kurukshetra<br>Kurukshetra, Haryana, India 136119 |
 ## About Me
 I am Ratin Kumar, a 2nd-year undergraduate Computer Engineering student at National Institute of Technology Kurukshetra. (I will update this later, currently focusing on more important things)
 
@@ -44,10 +44,10 @@ I am Ratin Kumar, a 2nd-year undergraduate Computer Engineering student at Natio
 
 The field of Artificial Intelligence is helping advancement of many fields. AI is relevant to any intellectual task. Modern artificial intelligence techniques are pervasive and are too numerous to list here. Some of the prominent examples range from `something `autonomous vehicles to life saving by helping in medical diagnosis. Apart from the aforementioned serious, AI is used in entertainment industry whether it maybe using AI to create articles or create deepfakes. The world has also seen AI being used to detect the wrongs in our society, like fake news and also to detect the wrongs by AI itself (eg deepfakes).
 
-At the heart of most AI solutions lies requirement of **labeled data**. The lack of  labeled data makes impossible for the algorithm to learn the regularities and patterns in data. Labeling data, manually, is cumbersome and time consuming. AI solutions can be divided in two categories:
+At the heart of most AI solutions lies requirement of **labeled data**. The lack of  labeled data makes impossible for the algorithm to learn the regularities and patterns in data. Labeling data, manually, is cumbersome and time consuming. Datasets can be divided in two categories:
 
-- Totally new
-- Derivative of something 
+- Derivatives: These would be datasets, whose base or parent object (in the tree of object types) have already trained models. For example consider the dataset of `Ferarri Cars` , the parent object type `car` had already been trained in pre-trained models on ImageNet. These pre-trained models will help us to improve the quality of annotations.
+- Non Derivatives: Datasets like images of`microchip`, have previously not been trained for and thus would require training from scratch. 
 
 Project `redacted` aims at providing a platform to simplify and speedup the process of data labeling by making use of automation tools and pre-trained machine learning models. This project will provide a simple gui to users for annotating data required by various machine learning tasks (computer vision based, nlp based or audio based) and make use of pre-trained models and some techniques (mentioned in implementation details section)  to allow automation of annotation to as far extent as possible. The gui will be supported by a `python` backend responsible for all preprocessing/recommendation for annotation and also storage of annotations received by the frontend.
 
