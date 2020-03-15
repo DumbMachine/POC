@@ -35,17 +35,11 @@ Phone: +91-9896225424
 | IRC Nick  | DumbMachine (Freenode)                                       |
 | Timezone  | Indian Standard Time (GMT +0530)                             |
 | Address   | 317, Abhimanyu Bhavan Hostel-6, NIT campus,National Institute of Technology Kurukshetra, Kurukshetra, Haryana, India 136119 |
-| Reference Contact | Prathamesh ApteEmail: [aptep.1976@rediffmail.com](mailto:aptep.1976@rediffmail.com)Phone: +91-8107407676 |
-| ----------------- | ------------------------------------------------------------ |
-|                   |                                                              |
-
-
-
 ## About Me
 I am Ratin Kumar, a 2nd-year undergraduate Computer Engineering student at National Institute of Technology Kurukshetra. I have good experience of using Python and Javascript for creating applications or just some hacky scripts to get things done. I really enjoy coding all the time, because of which I have numerous small projects on my Github.
 
 
-Riding cycle, stalking stock trends and competitive FPS games are some of my interests outside of the world of programming.
+Riding cycle, stalking stock market trends and competitive FPS games are some of my interests outside of the world of programming.
 
 
 ### Open Source
@@ -162,17 +156,17 @@ Brief show of the workflow
 
 | Duration              | Task                                                         |
 | --------------------- | ------------------------------------------------------------ |
-| March 27              | **Deadline for submitting Project Proposal**                 |
-| March 27 - April 23   | Learn more about Ganga Toolkit.Read Documentation and learn more about HTCondorLearn more about Jupyter Notebook. |
-| April 23 - May 14     | **Official Community Bonding Period**Get Involved with CERN, HTCondor and Jupyter community.Know more about mentors such as their timezone, preferred medium of communication etc.Learn about other projects and ongoing experiments at CERN.Get acquainted with various tools used at CERN.**Begin Task 1 : Design and Implement Plugin**Figure out prototype and plan how the plugin will work.Set up development environment. |
-| May 14 - June 6       | **Official Coding Period Start**Finish implementation of pluginTest the plugin to some sample jobs on local backend server.Perform UI tests and fix bugs. |
+| March 31              | **Deadline for submitting Project Proposal**                 |
+| March 31 - April 27   | Application Review Period                                    |
+| April 27 - May 18     | **Official Community Bonding Period**                        |
+| May 18 - August       | **Official Coding Period Start**Finish implementation of pluginTest the plugin to some sample jobs on local backend server.Perform UI tests and fix bugs. |
 | June 6 - June 11      | Time period for any unexpected delay.**Finish Task 1**       |
 | June 11 - June 15     | **Phase 1 evaluation**Submit git repository of Code with documentation for Task 1 |
 | June 15 - July 4      | **Begin Task 2 : Integrate plugin with HTCondor**Implement functionality for integrating HTCondor as backend.Test plugin for real batch jobs at CERN.Ask for feedbacks from the users and implement suggestions. |
 | July 4 - July 9       | Time period for any unexpected delay.**Finish Task 2**       |
 | July 9 - July 13      | **Phase 2 evaluation**Submit git repository of Code with documentation for Task 2 |
 | July 13 - August 10   | **Begin Task 3 : Deploy plugin to CERN IT Infrastructure**Test plugin on CERN’s batch infrastructure.Integrate plugin to SWAN Notebook service.Ask feedback from the users and implement suggestions. |
-| August 10 - August 14 | **Finish Task 3** **Final Submission**Submit git repository of final code with complete documentation. |
+| August 10 - August 10 | **Finish Task 3** **Final Submission**Submit git repository of final code with complete documentation. |
 
 
 
@@ -186,13 +180,23 @@ Brief show of the workflow
 
 ## Requirements
 
-- **Remote High-Speed Server**: Although
+- **Remote High-Processing Server**: A machine capable of servicing gpu loads of contemporary machine learning tasks. Getting access to this would be appreciated but is not a necessity for successful execution of this project. 
 
-# Deliverables
 
-- A functional frontend
+
+## Contributions (till 26 March 2018)
+
+- Swag lyrics
+- Moving the site from thing to `fastpages` or anything else, that they would prefer.
+
+### Deliverables
+
+- A functional frontend.
 - Fully modular and feature-rich backend which learns annotations while users perform actions.
-- Simple pipeline for training `Classification` and `Object Detection`.
+- Simple pipeline for training `Classification` and `Object Detection`. Making the base for an extension to allow for training.
+- Full test-suite of `unittests` and `integration`.
+- Detailed documentation of the whole tool.
+- Samples for using the tool.
 
 ## Working Environment And Schedule
 
@@ -202,14 +206,15 @@ I'll be working from either my house or hostel, both the places have access to g
 
 I’m very flexible with my schedule and already have the habit of working at night and hence timezone variation (with my mentor) won’t be an issue. I’m comfortable with any form of communication that suits my mentor.
 
-## Post-GSOC Plans
-
-- 
-
 ## Future Prospects:
 
 - Building a extension to this project to bring support for training models using standard or sota models.
 - Build a complete pipeline to allow laymen to train machine learning models and then export in standard forms.
+- I want to, through this project, provide the technical/non-technical audience a means to easily make datasets or train practical models on them.
+- Add support for cloud backend to data source.
+- Add support to allow usage cloud services as the processing backend.
+
+![image-20200315092713162](image-20200315092713162.png)
 
 # **References**:
 
