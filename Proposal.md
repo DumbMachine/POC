@@ -1,5 +1,3 @@
-![img](download.jpeg)
-
 # Project Redacted
 
 Mentors:
@@ -36,9 +34,15 @@ Phone: +91-9896225424
 | Timezone  | Indian Standard Time (GMT +0530)                             |
 | Address   | 208, Hostel-6, NIT campus<br>National Institute of Technology Kurukshetra<br>Kurukshetra, Haryana, India 136119 |
 ## About Me
-I am Ratin Kumar, a 2nd-year undergraduate Computer Engineering student at National Institute of Technology Kurukshetra. (I will update this later, currently focusing on more important things)
 
-# Project `redacted`
+I am Ratin Kumar, a 2nd year undergraduate Computer Engineering student at National Institute of Technology Kurukshetra. I have experience in programming with multiple languages such as Python, C/C++, Java, JavaScript, with Python being my favorite. My major interests lie in the field of machine learning. My most significant work to date is a machine learning algorithm that extracts key frames from long videos and uses object locations from each key frame as a means to search frames from database of videos. A research paper detailing the specifics of this approach will be released soon. _Project Autonate_ is a tool I have been working on which will provide the world with an open source solution that helps bring automation to the mundane task of data annotation by actively learning from annotated data.
+
+Besides programming, road cycling and stalking stocks are the hobbies that tack up most of my time.Project `redacted`
+
+### Preparation I have done:
+
+- Completed the qualification task. I will help ccextractor migrate their wiki website to the desired platform.
+- I have run extensive tests to help me understand the project better and determine best techniques to employ iterative/active learners to help manual annotators.
 
 ## Abstract
 
@@ -433,8 +437,7 @@ I’m very flexible with my schedule and timezone variation (with my mentor) won
 - Building a extension to this project to bring support for training models using state of the art models.
 - Build a complete pipeline to allow laymen to train machine learning models and then export in standard forms.
 - Add support for cloud backend to data source.
-- Add support to allow usage cloud services as the processing backend.
-- 
+- Add support to allow usage cloud services as the processing backend.c
 
 ![image-20200315092713162](image-20200315092713162.png)
 
