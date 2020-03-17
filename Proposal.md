@@ -330,13 +330,17 @@ Currently the following are tasks that support iterative or active learning:
 
     By making use of tfidf vectors, a model can learn what category of words are more probable of occurring as a particular category in NERs. An example:
 
-    For classification and sentiment analysis using `word2vec` to obtain vector representation of words and sentences to make a regression model proves suffice.
+    ![img](Tue, 17 Mar 2020 143028.png)
 
+    For classification and sentiment analysis using `word2vec` to obtain vector representation of words and sentences to make a regression model proves suffice.
+    
+    ![img](download-1584437543542.jpeg)
+    
     (I will update the POC for this soon)
 
 - Partial Support:
 
-  - Paraphrase detection and other similar tasks: Weak suggestions can be made in other nlp task by learning trends of occurrences of words in data. But these may not offer any real world advantage. This is still under testing
+  - Paraphrase detection and other similar tasks: Weak suggestions can be made in other nlp task by learning trends of occurrences of words in data. But these 	may not offer any real world advantage. This is still under testing
 
 ###    Audio Tasks:
 
