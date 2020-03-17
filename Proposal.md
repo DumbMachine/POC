@@ -109,6 +109,8 @@ A config file will be essential in providing information necessary for the funct
 
 ```yaml
 # config.yaml
+version: 1 # tag to help in versioning of data
+
 init: False # flag to initialize new dataset repo
 dataset_name: "default_dataset"
 
@@ -129,11 +131,14 @@ classification_categories:
 # Iterative Learning related options
 train: "true"
 training_approach: "iterative_learning" # ∈ ["iterative_learning", "multi_onevsall_classifiers"]
-train_size: "1000" # max samples from each class for training model
-train_split: "0.1"  # At what proportions of train_size to retrain
-augmentation: "True" # prevent overftting and increase robustness of model
-train_framework: "sklearn" # ∈ ['sklearn', 'tensorflow/pytorch']
-train_acc_threshold: 0.4 # Only serve suggestions if model is able to achive this accuracy 
+
+active_learner_params:
+    train_size: "1000" # max samples from each class for training model
+    train_split: "0.1"  # At what proportions of train_size to retrain
+    augmentation: "True" # prevent overftting and increase robustness of model
+    train_framework: "sklearn" # ∈ ['sklearn', 'tensorflow/pytorch']
+    train_acc_threshold: 0.4 # Only serve suggestions if model is able to achive this accuracy 
+
 
 # Miscellaneous options
 user_name: "dumbmachine"
@@ -336,7 +341,111 @@ Currently the following are tasks that support iterative or active learning:
 ###    Audio Tasks:
 
 - Classification, Segmentation and Tagging: By either making use of pre-trained vectors to obtain vectors from irregular length audio clips for use as features for regression models or generating own features by analyzing the audio wave histogram.
-- (POC for this will be uploaded soon)
+
+  Using the python library `librosa`, we obtain [Mel-frequency cepstrum](https://en.wikipedia.org/wiki/Mel-frequency_cepstrum) features of each audio clip. The following code snippet will display the method:
+
+  ```python
+  #returns mfcc features with mean and standard deviation along time
+  def get_mfcc(path):
+      b, _ = librosa.core.load(path, sr = SAMPLE_RATE)
+      assert _ == SAMPLE_RATE
+      try:
+          ft1 = librosa.feature.mfcc(b, sr = SAMPLE_RATE, n_mfcc=20)
+          ft2 = librosa.feature.zero_crossing_rate(b)[0]
+          ft3 = librosa.feature.spectral_rolloff(b)[0]
+          ft4 = librosa.feature.spectral_centroid(b)[0]
+          ft5 = librosa.feature.spectral_contrast(b)[0]
+          ft6 = librosa.feature.spectral_bandwidth(b)[0]
+          ft1_trunc = np.hstack((np.mean(ft1, axis=1), np.std(ft1, axis=1), skew(ft1, axis = 1), np.max(ft1, axis = 1), np.min(ft1, axis = 1)))
+          ft2_trunc = np.hstack((np.mean(ft2), np.std(ft2), skew(ft2), np.max(ft2), np.min(ft2)))
+          ft3_trunc = np.hstack((np.mean(ft3), np.std(ft3), skew(ft3), np.max(ft3), np.min(ft3)))
+          ft4_trunc = np.hstack((np.mean(ft4), np.std(ft4), skew(ft4), np.max(ft4), np.min(ft4)))
+          ft5_trunc = np.hstack((np.mean(ft5), np.std(ft5), skew(ft5), np.max(ft5), np.min(ft5)))
+          ft6_trunc = np.hstack((np.mean(ft6), np.std(ft6), skew(ft6), np.max(ft6), np.m(ft6)))
+          return pd.Series(np.hstack((ft1_trunc, ft2_trunc, ft3_trunc, ft4_trunc, ft5_trunc, ft6_trunc)))
+      except:
+          logging.error(f'bad file {path}')
+          return pd.Series([0]*125)
+  ```
+
+  This will generate features for all the audio clips. Example is following 
+
+  | Id   | 0    | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    | 9    | ...  | 117  | 118  | 119  | 120  | 121  | 122  | 123  | 124  | path         | label        |
+  | ---- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :----------- | ------------ |
+  | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | ...  | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 00044347.wav | Hi-hat       |
+  | 1    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | ...  | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 001ca53d.wav | Saxophone    |
+  | 2    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | ...  | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 002d256b.wav | Trumpet      |
+  | 3    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | ...  | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0033e230.wav | Glockenspiel |
+  | 4    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | ...  | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 00353774.wav | Cello        |
+
+  We combine the `mfcc`  features with another feature generator which analyses the distributions among each audio sample
+
+  ```python
+  def extract_features(files, path):
+      features = {}
+  
+      cnt = 0
+      for f in tqdm(files):
+          features[f] = {}
+  
+          fs, data = scipy.io.wavfile.read(os.path.join(path, f))
+  
+          abs_data = np.abs(data)
+          diff_data = np.diff(data)
+  
+          def calc_part_features(data, n=2, prefix=''):
+              f_i = 1
+              for i in range(0, len(data), len(data)//n):
+                  features[f]['{}mean_{}_{}'.format(prefix, f_i, n)] = np.mean(data[i:i + len(data)//n])
+                  features[f]['{}std_{}_{}'.format(prefix, f_i, n)] = np.std(data[i:i + len(data)//n])
+                  features[f]['{}min_{}_{}'.format(prefix, f_i, n)] = np.min(data[i:i + len(data)//n])
+                  features[f]['{}max_{}_{}'.format(prefix, f_i, n)] = np.max(data[i:i + len(data)//n])
+  
+          features[f]['len'] = len(data)
+          if features[f]['len'] > 0:
+              n = 1
+              calc_part_features(data, n=n)
+              calc_part_features(abs_data, n=n, prefix='abs_')
+              calc_part_features(diff_data, n=n, prefix='diff_')
+  
+              n = 2
+              calc_part_features(data, n=n)
+              calc_part_features(abs_data, n=n, prefix='abs_')
+              calc_part_features(diff_data, n=n, prefix='diff_')
+  
+              n = 3
+              calc_part_features(data, n=n)
+              calc_part_features(abs_data, n=n, prefix='abs_')
+              calc_part_features(diff_data, n=n, prefix='diff_')
+  
+  
+          cnt += 1
+  
+          # if cnt >= 1000:
+          #     break
+  
+      features = pd.DataFrame(features).T.reset_index()
+      features.rename(columns={'index': 'fname'}, inplace=True)
+      
+      return features
+  ```
+
+  This will generate robust features for each audio sample:
+
+  | Id   | 0    | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    | 9    | ...  | max_1_3 | mean_1_1  | mean_1_2  | mean_1_3  | min_1_1  | min_1_2 | min_1_3 | std_1_1     | std_1_2     | std_1_3     | label        |
+  | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :------ | :-------- | :-------- | :-------- | :------- | :------ | :------ | :---------- | :---------- | ----------- | ------------ |
+  | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | ...  | 97.0    | -0.931367 | -0.838818 | -0.757430 | -18601.0 | -221.0  | -126.0  | 1206.881456 | 28.793127   | 14.249761   | Hi-hat       |
+  | 1    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | ...  | 15701.0 | -0.495702 | -0.327620 | -0.344328 | -12593.0 | -9359.0 | -7484.0 | 3196.572491 | 2866.174942 | 2887.041732 | Saxophone    |
+  | 2    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | ...  | 35.0    | -1.156308 | -1.077098 | -1.173006 | -636.0   | -53.0   | -33.0   | 65.608624   | 13.855835   | 13.421382   | Trumpet      |
+  | 3    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | ...  | 4.0     | -0.817937 | -0.637596 | -0.496497 | -8345.0  | -25.0   | -5.0    | 259.141991  | 4.846361    | 1.041946    | Glockenspiel |
+  | 4    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | ...  | 5157.0  | -0.038102 | 22.482221 | 38.551893 | -12829.0 | -8860.0 | -5577.0 | 3005.821294 | 1701.234020 | 905.514833  | Cello        |
+
+  Now these features will be used to train a classifier. Depending upon the resources available to user and size of dataset, one of the two methods will be employed for learning annotations:
+
+  - Tree based Classifier: Making use of robust tree classifiers such as `LightGBM` or `XGBoost` imply that we can train on data fast.
+  - Deep Learning based Classifier: Making use of Neural Networks to learn on annotated data. This would require more
+
+- Refer to this document (will be updated soon) for a demo showing the accuracy of a tree classifer on audio data. 
 
 ## Proposed Deliverables for GSOC
 
