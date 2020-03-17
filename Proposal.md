@@ -328,13 +328,32 @@ Currently the following are tasks that support iterative or active learning:
 
   - NER, Classification, Sentiment Analysis: Two option will available to the user, initially: either make use of tfidf transformers and learn occurrences of works. Or make use of `word2vec` or `bert` to get representations of words and treat it like a normal classification problem.
 
-    By making use of tfidf vectors, a model can learn what category of words are more probable of occurring as a particular category in NERs. An example:
+    By making use of tfidf vectors, a model can learn what category of words are more probable of occurring as a particular category in NERs. An example showcasing a method of using TFIDF counts to find important annotations from each type, can be found here : https://github.com/DumbMachine/POC/blob/master/src/text/NER/Untitled.ipynb
 
     ![img](Tue, 17 Mar 2020 143028.png)
 
-    For classification and sentiment analysis using `word2vec` to obtain vector representation of words and sentences to make a regression model proves suffice.
+    For datasets that require more contextual approach in finding appropriate suggestions, a `word2vec` model will be used to obtain a `vector` representation of each word. The vectors. learnt from large corpus of data, have repsentations of words to understand relationships. 
+    
+    
     
     ![img](download-1584437543542.jpeg)
+    
+    For classification and sentiment analysis, users will have two options at their disposal:
+    
+    - Sklearn-based Solution: This will employ the, resource friendly, 
+    
+      ```python
+      # The arguments for significant functions can be passed via config.yaml
+      vec_tdidf = TfidfVectorizer(**args)
+      clf = XGBClassifier(**args)
+      
+      # Training on the documents where:
+      #  - X_train: Are feature vectors of each document using TfidfVectorizer.
+      # - Y_train: Label for documents.
+      clf.fit(X_train, y_train)
+      ```
+    
+    - Deep Learning-based Solution: Using `word2vec` representation to generate vectors for documents and use them for classification.
     
     (I will update the POC for this soon)
 
